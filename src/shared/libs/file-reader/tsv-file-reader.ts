@@ -1,32 +1,32 @@
-import { FileReader } from "./file-reader.interface.js";
-import { readFileSync } from "node:fs";
-import { Offer, Cities } from "../../types/index.js";
+import { FileReader } from './file-reader.interface.js';
+import { readFileSync } from 'node:fs';
+import { Offer, Cities } from '../../types/index.js';
 
 export class TSVFileReader implements FileReader {
-  private rawData = "";
+  private rawData = '';
 
   constructor(private readonly filename: string) {}
 
   public read(): void {
-    this.rawData = readFileSync(this.filename, { encoding: "utf-8" });
+    this.rawData = readFileSync(this.filename, { encoding: 'utf-8' });
   }
 
   public toArray(): Offer[] {
     if (!this.rawData) {
-      throw new Error("File was not read");
+      throw new Error('File was not read');
     }
 
     return this.rawData
-      .split("\n")
+      .split('\n')
       .filter((row) => row.trim().length > 0)
-      .map((line) => line.split("\t"))
+      .map((line) => line.split('\t'))
       .map(
         ([
           name,
           describe,
-          create_data,
+          createData,
           city,
-          preview_image,
+          previewImage,
           images,
           premium,
           favorite,
@@ -35,26 +35,26 @@ export class TSVFileReader implements FileReader {
           guests,
           amenities,
           autor,
-          comments_count,
+          commentsCount,
           coordinates,
         ]) => {
-          const [latatude, longitude] = coordinates.split(",");
+          const [latatude, longitude] = coordinates.split(',');
 
           return {
             name,
             describe,
-            create_data: new Date(create_data),
+            createData: new Date(createData),
             city: city as Cities,
-            preview_image,
-            images: images.split("|"),
+            previewImage,
+            images: images.split('|'),
             premium: !!premium,
             favorite: !!favorite,
             rating: Number(rating),
             bedrooms: Number(bedrooms),
             guests: Number(guests),
-            amenities: amenities.split("|"),
+            amenities: amenities.split('|'),
             autor,
-            comments_count: Number(comments_count),
+            commentsCount: Number(commentsCount),
             coordinates: {
               latatude: Number(latatude),
               longitude: Number(longitude),

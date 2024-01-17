@@ -1,13 +1,10 @@
-import { Command } from './commands/command.interface.js';
-import { CommandParser } from './command-parser.js';
-
+import { Command } from "../commands/command.interface.js";
+import { CommandParser } from "./command-parser.js";
 
 export class CLIApplication {
   private commands: Record<string, Command> = {};
 
-  constructor(
-    private readonly defaultCommand: string = '--help'
-  ) {}
+  constructor(private readonly defaultCommand: string = "--help") {}
 
   public registerCommands(commandList: Command[]): void {
     commandList.forEach((command) => {
@@ -23,8 +20,10 @@ export class CLIApplication {
   }
 
   public getDefaultCommand(): Command | never {
-    if (! this.commands[this.defaultCommand]) {
-      throw new Error(`The default command (${this.defaultCommand}) is not registered.`);
+    if (!this.commands[this.defaultCommand]) {
+      throw new Error(
+        `The default command (${this.defaultCommand}) is not registered.`
+      );
     }
     return this.commands[this.defaultCommand];
   }

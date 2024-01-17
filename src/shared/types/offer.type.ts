@@ -10,10 +10,10 @@ export type Coordinates = {
 export type Offer = {
     name: string;
     describe: string;
-    create_data: Date;
+    createData: Date;
     city: Cities;
-    preview_image: string,
-    images:  string[];
+    previewImage: string,
+    images: string[];
     premium: boolean;
     favorite: boolean;
     rating: number;
@@ -21,6 +21,6 @@ export type Offer = {
     guests: number;
     amenities: string[];
     autor: string;
-    comments_count: number;
+    commentsCount: number;
     coordinates: Coordinates;
 }
