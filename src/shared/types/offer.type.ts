@@ -1,4 +1,4 @@
-import { User } from "./user.type.js";
+// import { User } from './user.type.js';
 
 export type Cities = 'Paris' | 'Cologne' | 'Hamburg' | 'Dusseldorf' | 'Brussels' | 'Amsterdam';
 
