@@ -1,3 +1,5 @@
+import { User } from './user.type.js';
+
 export type Cities = 'Paris' | 'Cologne' | 'Hamburg' | 'Dusseldorf' | 'Brussels' | 'Amsterdam';
 
 export type Coordinates = {
@@ -7,7 +9,7 @@ export type Coordinates = {
 
 export type Offer = {
     name: string;
-    describe: string;
+    description: string;
     createData: Date;
     city: Cities;
     previewImage: string,
@@ -18,7 +20,7 @@ export type Offer = {
     bedrooms: number;
     guests: number;
     amenities: string[];
-    autor: string;
-    commentsCount: number;
+    autor: User;
+    commentsCount: string;
     coordinates: Coordinates;
 }
