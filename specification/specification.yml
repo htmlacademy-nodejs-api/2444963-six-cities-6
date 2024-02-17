@@ -1,0 +1,203 @@
+openapi: 3.1.0
+info:
+  title: "Six Cities"
+  description: API for managing real estate rental offers, user comments, user management, and favorite listings.
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 2.0.0
+servers:
+  - url: /api/v1
+tags:
+  - name: Users
+    description: Operations related to users.
+  - name: Offers
+    description: Operations related to rental offers.
+  - name: Comments
+    description: Operations related to comments on rental offers.
+paths:
+  /users/create:
+    post:
+      tags: [Users]
+      summary: User sign-up
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        "201": {description: User registered}
+        "400": {description: Invalid email or password}
+        "409": {description: Email already exists}
+
+  /users/login:
+    post:
+      tags: [Users]
+      summary: User sign-in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+      responses:
+        "200": {description: User logged in, returns token}
+        "400": {description: Invalid email or password}
+        "404": {description: User not found}
+
+  /users/check:
+    get:
+      tags: [Users]
+      summary: User authorization check
+      responses:
+        "200": {description: User is authorized}
+        "401": {description: Unauthorized}
+
+  /users/{id}:
+    get:
+      tags: [Users]
+      summary: User details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200": {description: User details}
+        "404": {description: User not found}
+        "401": {description: Unauthorized}
+
+  /offers/create:
+    post:
+      tags: [Offers]
+      summary: Create a new offer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOfferRequest'
+      responses:
+        "201": {description: Offer created}
+        "400": {description: Invalid data}
+
+  /offers/{id}:
+    get:
+      tags: [Offers]
+      summary: Get offer by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+      responses:
+        "200": {description: Offer details}
+        "404": {description: Offer not found}
+
+  /comments/offers/{offerId}:
+      get:
+        tags: [Comments]
+        summary: Retrieve comments for an offer
+        description: Returns a list of comments related to a specific offer.
+        parameters:
+          - name: offerId
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          "200":
+            description: List of comments for the offer.
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Comment'
+          "404":
+            description: Offer not found.
+
+  /comments/add:
+    post:
+      tags: [Comments]
+      summary: Add a comment to an offer
+      description: Allows authorized users to add a comment to a specific offer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCommentRequest'
+      responses:
+        "201":
+          description: Comment successfully added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        "400":
+          description: Invalid request data.
+        "404":
+          description: Offer not found.
+        "401":
+          description: Unauthorized.
+
+
+components:
+  schemas:
+    CreateUserRequest:
+      type: object
+      properties:
+        email: {type: string, format: email}
+        password: {type: string, format: password}
+
+    LoginUserRequest:
+      type: object
+      properties:
+        email: {type: string, format: email}
+        password: {type: string, format: password}
+
+    User:
+      type: object
+      properties:
+        id: {type: string}
+        email: {type: string, format: email}
+        name: {type: string}
+        avatarUrl: {type: string, nullable: true}
+
+    CreateOfferRequest:
+      type: object
+      properties:
+        title: {type: string}
+        description: {type: string}
+        price: {type: number}
+        city: {type: string}
+        images: {type: array, items: {type: string}}
+        isPremium: {type: boolean}
+        isFavorite: {type: boolean}
+
+    Offer:
+      allOf:
+        - $ref: '#/components/schemas/CreateOfferRequest'
+        - type: object
+          properties:
+            id: {type: string}
+            rating: {type: number}
+
+    CreateCommentRequest:
+      type: object
+      properties:
+        offerId: {type: string}
+        text: {type: string}
+        rating: {type: number}
+
+    Comment:
+      type: object
+      properties:
+        id: {type: string}
+        offerId: {type: string}
+        text: {type: string}
+        rating: {type: number}
+        createdAt: {type: string, format: date-time}
+
