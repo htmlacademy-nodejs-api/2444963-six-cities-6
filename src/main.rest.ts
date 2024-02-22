@@ -12,8 +12,7 @@ async function bootstrap() {
     createRestApplicationContainer(),
     createUserContainer(),
     createOfferContainer(),
-    createCommentContainer(),
-
+    createCommentContainer()
   );
 
   const application = appContainer.get<RestApplication>(
