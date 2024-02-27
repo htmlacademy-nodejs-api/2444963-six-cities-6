@@ -1,10 +1,11 @@
-import { Offer, Cities } from '../types/offer.type.js';
+import { Offer, Cities, Amenity } from '../types/offer.type.js';
 import { User } from '../types/user.type.js';
 
 export function createOffer(offerData: string): Offer {
   const [
     name,
     description,
+    price,
     createData,
     city,
     previewImage,
@@ -39,12 +40,13 @@ export function createOffer(offerData: string): Offer {
     rating: Number(rating),
     bedrooms: Number(bedrooms),
     guests: Number(guests),
-    amenities: amenities.split('|'),
+    amenities: amenities.split('|') as Amenity[],
     autor: autorC,
     commentsCount: commentsCount,
     coordinates: {
       latatude: Number(latatude),
       longitude: Number(longitude),
     },
+    price: Number(price)
   };
 }
