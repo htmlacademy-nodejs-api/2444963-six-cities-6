@@ -33,7 +33,7 @@
     "json-server": "0.17.3",
     "pino-pretty": "10.2.0",
     "rimraf": "5.0.1",
-    "ts-node": "^10.9.2",
+    "ts-node": "^10.9.1",
     "tslib": "^2.6.2",
     "typescript": "5.2.2"
   },
@@ -55,11 +55,12 @@
     "express-async-handler": "^1.2.0",
     "got": "13.0.0",
     "http-status-codes": "^2.3.0",
-    "nodemon": "^3.0.3",
     "inversify": "^6.0.2",
+    "jose": "4.15.4",
     "mime-types": "2.1.35",
     "mongoose": "7.5.3",
     "multer": "1.4.5-lts.1",
+    "nodemon": "^3.0.3",
     "pino": "^8.19.0",
     "reflect-metadata": "^0.2.1"
   }
