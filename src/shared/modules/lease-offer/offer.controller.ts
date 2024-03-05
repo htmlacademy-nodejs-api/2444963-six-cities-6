@@ -1,10 +1,10 @@
 import {
   BaseController,
+  DocumentExistsMiddleware,
   HttpMethod,
+  PrivateRouteMiddleware, UploadFileMiddleware,
   ValidateDtoMiddleware,
   ValidateObjectIdMiddleware,
-  DocumentExistsMiddleware,
-  PrivateRouteMiddleware,
 } from '../../libs/rest/index.js';
 import { inject, injectable } from 'inversify';
 import { Component } from '../../types/index.js';
@@ -18,7 +18,8 @@ import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
-
+import { Config, RestSchema } from '../../libs/config/index.js';
+import { UploadImageRdo } from './rdo/upload-image.rdo.js';
 import {
   DEFAULT_PREMIUM_OFFER_COUNT,
   DEFAULT_FVORITE_OFFER_COUNT,
@@ -29,8 +30,8 @@ export default class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
-    @inject(Component.CommentService)
-    private readonly commentService: CommentService
+    @inject(Component.CommentService) private readonly commentService: CommentService,
+    @inject(Component.Config) private readonly configService: Config<RestSchema>,
   ) {
     super(logger);
 
@@ -93,6 +94,16 @@ export default class OfferController extends BaseController {
       path: '/bundles/premium',
       method: HttpMethod.Get,
       handler: this.getPremium,
+    });
+    this.addRoute({
+      path: '/:offerId/image',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+      ]
     });
   }
 
@@ -165,5 +176,12 @@ export default class OfferController extends BaseController {
       DEFAULT_PREMIUM_OFFER_COUNT
     );
     this.ok(res, fillDTO(OfferRdo, discussedOffers));
+  }
+
+  public async uploadImage({ params, file } : Request<ParamOfferId>, res: Response) {
+    const { offerId } = params;
+    const updateDto = { previewImage: file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 }

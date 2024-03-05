@@ -40,11 +40,6 @@ export class CreateOfferDto {
   @IsEnum(CitiesEnum, { message: CreateOfferValidationMessage.type.invalid })
   public city: Cities;
 
-  @MaxLength(256, {
-    message: CreateOfferValidationMessage.previewImage.maxLength,
-  })
-  public previewImage: string;
-
   @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
   @Max(200000, { message: CreateOfferValidationMessage.images.maxValue })
   public images: string[];
