@@ -77,6 +77,8 @@ export class ImportCommand implements Command {
       amenities: offer.amenities,
       commentsCount: Number(offer.commentsCount),
       coordinates: offer.coordinates,
+      userId: '',
+      price: 0
     });
   }
 

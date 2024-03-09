@@ -37,6 +37,8 @@ export class CreateOfferDto {
   )
   public createData: Date;
 
+  public previewImage: string;
+
   @IsEnum(CitiesEnum, { message: CreateOfferValidationMessage.type.invalid })
   public city: Cities;
 
@@ -71,6 +73,8 @@ export class CreateOfferDto {
   public amenities: string[];
 
   public userId: string;
+
+  public autor: string;
 
   public commentsCount: number;
 
