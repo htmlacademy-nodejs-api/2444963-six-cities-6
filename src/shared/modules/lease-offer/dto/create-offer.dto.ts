@@ -8,15 +8,15 @@ import {
   MaxLength,
   Min,
   MinLength,
-} from 'class-validator';
-import { CreateOfferValidationMessage } from './create-offer.messages.js';
+} from "class-validator";
+import { CreateOfferValidationMessage } from "./create-offer.messages.js";
 
 import {
   CitiesEnum,
   AmenityEnum,
   Cities,
   Coordinates,
-} from '../../../types/offer.type.js';
+} from "../../../types/offer.type.js";
 
 export class CreateOfferDto {
   @MinLength(10, { message: CreateOfferValidationMessage.title.minLength })
@@ -44,10 +44,10 @@ export class CreateOfferDto {
   @Max(200000, { message: CreateOfferValidationMessage.images.maxValue })
   public images: string[];
 
-  @IsBoolean({ message: 'Must be a boolean type' })
+  @IsBoolean({ message: "Must be a boolean type" })
   public premium: boolean;
 
-  @IsBoolean({ message: 'Must be a boolean type' })
+  @IsBoolean({ message: "Must be a boolean type" })
   public favorite: boolean;
 
   @IsInt({ message: CreateOfferValidationMessage.rating.invalidFormat })
@@ -71,6 +71,8 @@ export class CreateOfferDto {
   public amenities: string[];
 
   public userId: string;
+
+  public autor: string;
 
   public commentsCount: number;
 
